@@ -1,35 +1,12 @@
 const vscode = require('vscode');
 const { HfInference } = require('@huggingface/inference');
+const { prompts } = require("./prompts")
 
 const dogs = {
-    nerd: { 
-        name: "Nerd", 
-        gif: "public/i1.gif", 
-        tone: "analytical", 
-        traits: ["detailed", "precise"],
-        prompt: "You are a nerdy, analytical code reviewer. Provide a detailed, technical analysis of the code focusing on best practices, potential improvements, and technical insights."
-    },
-    sassy: { 
-        name: "Sassy", 
-        gif: "public/i2.gif", 
-        tone: "sarcastic", 
-        traits: ["critical", "edgy"],
-        prompt: "You are a sassy, snarky code reviewer. Roast the code with witty, sarcastic comments while pointing out genuine issues."
-    },
-    romantic: { 
-        name: "Romantic", 
-        gif: "public/i3.gif", 
-        tone: "poetic", 
-        traits: ["gentle", "encouraging"],
-        prompt: "You are a romantic code reviewer. Provide gentle, poetic, and encouraging feedback about the code, highlighting its potential and beauty."
-    },
-    normal: { 
-        name: "Normal", 
-        gif: "public/i4.gif", 
-        tone: "balanced", 
-        traits: ["neutral", "pragmatic"],
-        prompt: "You are a balanced, neutral code reviewer. Provide objective, clear, and constructive feedback about the code."
-    }
+    nerd: prompts.nerd,
+    sassy: prompts.sassy,
+    romantic: prompts.romantic,
+    normal: prompts.normal
 };
 
 function activate(context) {
@@ -109,15 +86,18 @@ function getWebviewContent(analysis, dog) {
     <head>
         <style>
             body { 
-                font-family: Arial, sans-serif; 
+                font-family: 'Cascadia Code', 'Fira Code', monospace; 
+                line-height: 1.6;
                 padding: 20px; 
-                background-color: #f0f0f0; 
+                background-color: #f4f4f4; 
             }
             .analysis {
                 background-color: white;
                 border-radius: 10px;
                 padding: 20px;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                white-space: pre-wrap;
+                word-wrap: break-word;
             }
             .dog-header {
                 display: flex;
@@ -136,9 +116,7 @@ function getWebviewContent(analysis, dog) {
             <img src="${dog.gif}" alt="${dog.name}">
             <h1>${dog.name}'s Code Review</h1>
         </div>
-        <div class="analysis">
-            <pre>${analysis}</pre>
-        </div>
+        <div class="analysis">${analysis}</div>
     </body>
     </html>
     `;
