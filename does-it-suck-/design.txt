@@ -1,0 +1,18 @@
+Prompt the user to select one of four dogs with unique personalities.
+:->
+1. nerd
+2. sassy(ready to burn)
+3. romantic
+4. normal
+
+
+each dog will have an image which will be pixelated animation like a gif
+
+commands will be like this :
+1. start
+welcomes the user with their vs code saved username or their windows saved pc name or their terminal username
+2. bark
+this command will read the code and using the help of ai or an api comment on the code 
+
+
+Use the selected dog's attributes to read and comment on the user's code.
