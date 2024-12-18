@@ -1,0 +1,10 @@
+/node_modules
+.vscode/**
+.vscode-test/**
+test/**
+.vscodeignore
+vsc-extension-quickstart.md
+**/jsconfig.json
+**/*.map
+**/eslint.config.mjs
+**/.vscode-test.*
