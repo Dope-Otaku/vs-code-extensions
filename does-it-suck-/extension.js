@@ -27,6 +27,25 @@ function activate(context) {
     context.subscriptions.push(disposable);
 }
 
+
+// export function activate(context) {
+//     const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
+
+//     let disposable = vscode.commands.registerCommand('does-it-suck-.selectDog', async () => {
+//         const dogNames = Object.keys(dogs).map((key) => dogs[key].name);
+//         const selectedDogName = await vscode.window.showQuickPick(dogNames, {
+//             placeHolder: "Choose your coding companion",
+//         });
+
+//         const selectedDog = Object.values(dogs).find(dog => dog.name === selectedDogName);
+//         if (selectedDog) {
+//             await analyzeCode(selectedDog, hf);
+//         }
+//     });
+
+//     context.subscriptions.push(disposable);
+// }
+
 async function analyzeCode(dog, hf) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
@@ -49,7 +68,7 @@ async function analyzeCode(dog, hf) {
             // Display the analysis
             const panel = vscode.window.createWebviewPanel(
                 'dogCodeAnalysis',
-                `${dog.name}'s Code Review`, // Fixed string interpolation
+                `${dog.name}'s Code Review`,
                 vscode.ViewColumn.Two,
                 { enableScripts: true }
             );
@@ -63,20 +82,44 @@ async function analyzeCode(dog, hf) {
 
 async function generateAIComments(code, dog, hf) {
     try {
+        // Validate code to prevent inappropriate content
+        // if (containsInappropriateContent(code)) {
+        //     return "🚫 Inappropriate content detected. Please submit a meaningful code sample.";
+        // }
+
         const response = await hf.textGeneration({
-            model: 'gpt2', // Replace with a more suitable model
-            inputs: `${dog.prompt}\n\nCode to analyze:\n${code}\n\nProvide a comprehensive code review:`,
+            model: dog.model, 
+            inputs: dog.prompt(code),
             parameters: { 
-                max_new_tokens: 500,
-                temperature: 0.7 
+                max_new_tokens: 900,
+                temperature: 0.7,
+                top_p: 0.9
             }
         });
 
-        return response.generated_text;
+        // Clean up repetitive or irrelevant content
+        const analysisText = response.generated_text || "No analysis could be generated.";
+        return analysisText
+            .split("\n")
+            .filter(line => !/No warranties|No liabilities|No legal advice|undefined/i.test(line))
+            .join("\n")
+            .trim();
     } catch (error) {
         console.error('AI Analysis Error:', error);
-        throw error;
+        return `Analysis failed: ${error.message}`;
     }
+}
+
+function containsInappropriateContent(code) {
+    // Basic inappropriate content check
+    const inappropriatePatterns = [
+        /shit/gi,
+        /fuck/gi,
+        /damn/gi,
+        /crap/gi
+    ];
+
+    return inappropriatePatterns.some(pattern => pattern.test(code));
 }
 
 function getWebviewContent(analysis, dog) {
@@ -89,15 +132,16 @@ function getWebviewContent(analysis, dog) {
                 font-family: 'Cascadia Code', 'Fira Code', monospace; 
                 line-height: 1.6;
                 padding: 20px; 
-                background-color: #f4f4f4; 
+                background-color: #f4f4f4;
+                color: #333; 
             }
             .analysis {
-                background-color: white;
-                border-radius: 10px;
-                padding: 20px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                 white-space: pre-wrap;
                 word-wrap: break-word;
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             }
             .dog-header {
                 display: flex;
@@ -113,7 +157,7 @@ function getWebviewContent(analysis, dog) {
     </head>
     <body>
         <div class="dog-header">
-            <img src="${dog.gif}" alt="${dog.name}">
+            <img src="${prompts.nerd.gif}" alt="${dog.name}">
             <h1>${dog.name}'s Code Review</h1>
         </div>
         <div class="analysis">${analysis}</div>
