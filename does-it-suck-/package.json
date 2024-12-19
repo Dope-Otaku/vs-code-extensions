@@ -1,10 +1,14 @@
 {
-  "name": "does-it-suck-",
+  "name": "doesitsuck",
   "displayName": "Does It Suck?",
+  "publisher": "DopeLabs12souvik",
   "description": "Comments on your code smartly but can you handle that?",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.96.0"
+  },"repository": {
+    "type": "git",
+    "url": "https://github.com/Dope-Otaku/vs-code-extensions.git"
   },
   "categories": [
     "Other"
