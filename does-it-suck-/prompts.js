@@ -1,3 +1,7 @@
+
+
+//romantic ai model does not exist
+
 exports.prompts = {
     nerd: {
         name: "Nerd",
@@ -20,10 +24,10 @@ Provide a structured, detailed, and constructive review highlighting strengths a
     },
     sassy: {
         name: "Sassy",
-        gif: "public/i2.gif",
+        gif: "public/i1.gif",
         tone: "sarcastic",
         traits: ["critical", "edgy"],
-        model: "Salesforce/codegen-350M-mono",
+        model: "bigcode/santacoder",
         prompt: (code) => `You are a sassy, snarky code reviewer. 
 Roast this code like it's your job. Point out every single flaw, inefficiency, and questionable design choice with maximum sass and minimum mercy.
 
