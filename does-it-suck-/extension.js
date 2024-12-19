@@ -1,7 +1,25 @@
+// const dotenv = require('dotenv').config();
 const vscode = require('vscode');
 const { HfInference } = require('@huggingface/inference');
 const { prompts } = require("./prompts")
 const path = require('path');
+const result = require('dotenv').config({
+    path: path.resolve(__dirname, '.env') //we can use this to import env file direct import not works
+});
+
+if (result.error) {
+    console.error('Error loading .env:', result.error);
+}
+
+if (!process.env.HF_ACCESS_TOKEN) {
+    throw new Error('Missing HF_ACCESS_TOKEN in environment variables');
+}
+
+
+
+// console.log('HF_ACCESS_TOKEN:', process.env.HF_ACCESS_TOKEN || 'Token not set');
+
+
 
 const dogs = {
     nerd: prompts.nerd,
