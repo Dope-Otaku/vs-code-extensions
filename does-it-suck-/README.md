@@ -1,65 +1,81 @@
-# does-it-suck- README
+# does-it-suck- README  
 
-This is the README for your extension "does-it-suck-". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Welcome to the **"does-it-suck-"** VS Code extension! This extension introduces an innovative way to analyze your code with the help of AI-powered dogs with unique personalities.  
 
 ---
 
-## Working with Markdown
+## Features  
 
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+- **Nerd AI Dog (Fully Functional):** Provides in-depth, technical, and precise code reviews to improve your code quality.  
+- **Beta Dog Models:** Explore three additional AI models—Sassy, Romantic, and Normal—for different review styles. (Currently in beta testing and may not function as expected.)  
+- **Interactive Code Analysis:** Choose your preferred coding companion and let them analyze your active code with intelligent suggestions.  
+- **Webview Reports:** Get detailed analysis displayed in a visually engaging webview, complete with themed elements.  
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
+Example:
+![Feature Demo](public/dogNerd.gif)  
 
-## For more information
+---
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+## Requirements  
 
-**Enjoy!**
+- **VS Code Version**: Requires VS Code 1.70.0 or later.  
+- **API Access**: Ensure you have a valid Hugging Face API token for the analysis to work.  
+- **Internet Connection**: Necessary for AI communication.  
+
+---
+
+## Getting Started  
+
+1. **Install the Extension:**  
+   Download and install the "does-it-suck-" extension from the Visual Studio Code Marketplace.  
+
+2. **Set Your API Key:**  
+   Save your Hugging Face API key in your environment variable as `HF_ACCESS_TOKEN`. Alternatively, you can modify the `HfInference` constructor directly in the code for testing.  
+
+3. **Run the Extension:**  
+   - Open a code file in VS Code.  
+   - Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) and type `Does It Suck - Select Dog`.  
+   - Pick your favorite AI dog companion and let them analyze your code!  
+
+---
+
+## Extension Settings  
+
+This extension currently does not require configuration but will include customizable settings in future updates.  
+
+---
+
+## Known Issues  
+
+- Only the **Nerd AI dog** is fully operational at this time.  
+- The **Sassy**, **Romantic**, and **Normal** AI models may not work as expected.  
+- Minor performance delays when analyzing large codebases.  
+
+---
+
+## Release Notes  
+
+### 1.0.0  
+
+- **Initial Beta Release**:  
+  - Fully functional **Nerd AI Dog** for code analysis.  
+  - Beta integration for **Sassy**, **Romantic**, and **Normal** models.  
+  - Interactive code reviews with engaging webview reports.  
+
+### Upcoming Features  
+
+- Full support for all AI dog models.  
+- Improved performance and stability.  
+- Additional configuration options for personalized code analysis.  
+
+---
+
+## For Developers  
+
+Want to contribute or report a bug? Check out the [GitHub Repository](#) for more details.  
+
+---
+
+## Enjoy Your Code Reviews!  
+
+Bring your code to life with "does-it-suck-" and let your AI dog companions help you write better, cleaner, and smarter code!  

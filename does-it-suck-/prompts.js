@@ -5,7 +5,7 @@
 exports.prompts = {
     nerd: {
         name: "Nerd",
-        gif: "public/i1.gif",
+        gif: "public/dogNerd.gif",
         tone: "analytical",
         traits: ["detailed", "precise"],
         model: "deepseek-ai/deepseek-coder-1.3b-instruct",
@@ -41,7 +41,7 @@ Tear this code apart with witty, cutting commentary while still providing constr
         gif: "public/i3.gif",
         tone: "poetic",
         traits: ["gentle", "encouraging"],
-        model: "microsoft/CodeBERTa-small-custom",
+        model: "mistralai/Mistral-7B-Instruct-v0.1",
         prompt: (code) => `You are a romantic, poetic code reviewer who sees the potential in every line of code.
 Evaluate this code as if it were a beautiful piece of art, finding its inner beauty and potential.
 

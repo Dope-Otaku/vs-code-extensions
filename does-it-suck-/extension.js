@@ -13,6 +13,20 @@ const dogs = {
 function activate(context) {
     const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
 
+    // context.subscriptions.push(
+    //     vscode.commands.registerCommand('extension.showGif', () => {
+    //       const panel = vscode.window.createWebviewPanel(
+    //         'dogNerd',
+    //         'DOG NERD',
+    //         vscode.ViewColumn.One,
+    //         { enableScripts: true }
+    //       );
+        //   const gifPath = panel.webview.asWebviewUri(
+        //     vscode.Uri.file(path.join(context.extensionPath, 'public', 'dogNerd.gif'))
+        //   );
+
+
+
     let disposable = vscode.commands.registerCommand('does-it-suck-.selectDog', async () => {
         const dogNames = Object.keys(dogs).map((key) => dogs[key].name);
         const selectedDogName = await vscode.window.showQuickPick(dogNames, {
@@ -86,81 +100,39 @@ async function generateAIComments(code, dog, hf) {
             throw new Error("Unexpected response format from the model");
         }
 
-        // Clean up the response by removing the prompt and code
+        // Enhanced cleaning of the response
         const cleanedAnalysis = analysisText
-            // Remove everything before "Code to analyze:"
+            // Remove everything before the actual analysis
+            .replace(dog.prompt, '')
             .replace(/^[\s\S]*?Code to analyze:/i, '')
-            // Remove the actual code (use the provided code as a reference)
             .replace(code, '')
-            // Remove common boilerplate text
             .replace(/Code to work with:/i, '')
             .replace(/Tear this code apart[\s\S]*?paragraphs\./i, '')
             .replace(/You are a[\s\S]*?paragraphs\./i, '')
-            // Split into lines and filter out empty lines and boilerplate
+            // Remove specific headers and formatting
+            .replace(/\*\*.*?\*\*/g, '') // Remove bold headers
+            .replace(/^(Nerd|Sassy|Romantic|Normal)('s Code Review)?/gm, '') // Remove dog names
+            .replace(/^Provide a structured.*?paragraphs\./m, '') // Remove instruction text
             .split('\n')
             .filter(line => 
                 line.trim() && 
-                !/No warranties|No liabilities|No legal advice|undefined|^>|^\s*\/\/|^\s*$/.test(line)
+                !/No warranties|No liabilities|No legal advice|undefined|^>|^\s*\/\/|^\s*$/.test(line) &&
+                !line.startsWith('Code Quality:') &&
+                !line.startsWith('Potential Improvements:') &&
+                !line.startsWith('Best Practices:') &&
+                !line.startsWith('Security Concerns:') &&
+                !line.startsWith('Performance Considerations:')
             )
             .join('\n')
             .trim();
 
-        // If the cleaned analysis is empty, return an error message
-        if (!cleanedAnalysis) {
-            return "The model did not generate a meaningful analysis. Please try again.";
-        }
-
-        return cleanedAnalysis;
+        return cleanedAnalysis || "The model did not generate a meaningful analysis. Please try again.";
 
     } catch (error) {
         console.error('AI Analysis Error:', error);
         return `Analysis failed: ${error.message}. Please try again or select a different model.`;
     }
 }
-
-// function getWebviewContent(analysis, dog) {
-//     return `
-//     <!DOCTYPE html>
-//     <html>
-//     <head>
-//         <style>
-//             body { 
-//                 font-family: 'Cascadia Code', 'Fira Code', monospace; 
-//                 line-height: 1.6;
-//                 padding: 20px; 
-//                 background-color: #f4f4f4;
-//                 color: #333; 
-//             }
-//             .analysis {
-//                 white-space: pre-wrap;
-//                 word-wrap: break-word;
-//                 background-color: white;
-//                 padding: 20px;
-//                 border-radius: 8px;
-//                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-//             }
-//             .dog-header {
-//                 display: flex;
-//                 align-items: center;
-//                 margin-bottom: 20px;
-//             }
-//             .dog-header img {
-//                 width: 100px;
-//                 margin-right: 20px;
-//                 border-radius: 50%;
-//             }
-//         </style>
-//     </head>
-//     <body>
-//         <div class="dog-header">
-//             <img src="${prompts.nerd.gif}" alt="${dog.name}">
-//             <h1>${dog.name}'s Code Review</h1>
-//         </div>
-//         <div class="analysis">${analysis}</div>
-//     </body>
-//     </html>
-//     `;
-// }
 
 
 
@@ -197,6 +169,24 @@ async function generateAIComments(code, dog, hf) {
 // }
 
 function getWebviewContent(analysis, dog) {
+    // Create proper path to GIF file
+    const op = "public/dogNerd.gif"
+    // context.subscriptions.push(
+    //     vscode.commands.registerCommand('extension.showGif', () => {
+    //       const panel = vscode.window.createWebviewPanel(
+    //         'dogNerd',
+    //         'DOG NERD',
+    //         vscode.ViewColumn.One,
+    //         { enableScripts: true }
+    //       );
+
+
+
+    //       const gifPath = panel.webview.asWebviewUri(
+    //         vscode.Uri.file(path.join(context.extensionPath, 'public', 'dogNerd.gif'))
+    //       );
+
+
     return `
     <!DOCTYPE html>
     <html>
@@ -224,14 +214,17 @@ function getWebviewContent(analysis, dog) {
             }
             .dog-header img {
                 width: 100px;
+                height: 100px;
                 margin-right: 20px;
                 border-radius: 50%;
+                object-fit: cover;
             }
         </style>
     </head>
     <body>
         <div class="dog-header">
-            <img src="${dog.gif}" alt="${dog.name}">
+            <img src="${op}" alt="${dog.name}"> 
+
             <h1>${dog.name}'s Code Review</h1>
         </div>
         <div class="analysis">${analysis}</div>
