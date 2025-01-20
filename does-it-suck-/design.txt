@@ -111,3 +111,7 @@ Review the code focusing on:
 - Recommendations for improvement no more than 3 paragraphs.`
     }
 };
+
+
+
+#### new design we need to set up an ai agent just like elena to talk with other messagesx
